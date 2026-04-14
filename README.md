@@ -22,7 +22,7 @@
 🗃️ https://techraptor.net/gaming/guides/windrose-server-setup
 
 ### The Game
-🕹️ https://store.steampowered.com/app/4129620/Windrose/
+🕹️ https://store.steampowered.com/app/3041230/Windrose/
 
 ### Dedicated server info
 🖥️ https://steamdb.info/app/4129620/info/
