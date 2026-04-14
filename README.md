@@ -1,6 +1,7 @@
-# WindowsGSMPluginTemplate
-🧩WindowsGSM plugin that provides PluginTemplate Dedicated server
+# WindowsGSM.Windrose
+🧩WindowsGSM plugin that provides Windrose Dedicated server
 
+# Please leave a ⭐star⭐ if you like it!
 
 # WindowsGSM Installation: 
 1. Download  WindowsGSM https://windowsgsm.com/ 
@@ -8,24 +9,24 @@
 4. Drag WindowsGSM.exe into previously created folder and execute it.
 
 # Plugin Installation:
-1. Download [latest](https://github.com/ohmcodes/WindowsGSM.PluginTemplate/releases/latest) release
-2. Extract then Move **PluginTemplate.cs** folder to **plugins** folder
+1. Download [latest](https://github.com/ohmcodes/WindowsGSM.Windrose/releases/latest) release
+2. Extract then Move **Windrose.cs** folder to **plugins** folder
 3. OR Press on the Puzzle Icon in the left bottom side and install this plugin by navigating to it and select the Zip File.
 4. Click **[RELOAD PLUGINS]** button or restart WindowsGSM
-5. Navigate "Servers" and Click "Install Game Server" and find "PluginTemplate Dedicated Server [PluginTemplate.cs]
+5. Navigate "Servers" and Click "Install Game Server" and find "Windrose Dedicated Server [Windrose.cs]
 
 ### Official Documentation
-🗃️ https://TheGame.fandom.com/wiki/Dedicated_servers
+🗃️ https://playwindrose.com/dedicated-server-guide/
 
 ### Unofficial Documentation
-🗃️ https://www.domain.com/blog/TheGame-dedicated-server/
+🗃️ https://techraptor.net/gaming/guides/windrose-server-setup
 
 ### The Game
-🕹️ https://store.steampowered.com/app/420/TheGame/
+🕹️ https://store.steampowered.com/app/4129620/Windrose/
 
 ### Dedicated server info
-🖥️ https://steamdb.info/app/420/info/
+🖥️ https://steamdb.info/app/4129620/info/
 
 
 # License
-This project is licensed under the MIT License - see the <a href="https://github.com/ohmcodes/WindowsGSM.PluginTemplate/blob/main/LICENSE">LICENSE.md</a> file for details
+This project is licensed under the MIT License - see the <a href="https://github.com/ohmcodes/WindowsGSM.Windrose/blob/main/LICENSE">LICENSE.md</a> file for details
