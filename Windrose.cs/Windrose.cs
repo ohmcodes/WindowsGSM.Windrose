@@ -30,7 +30,7 @@ namespace WindowsGSM.Plugins
         public string Error, Notice;
 
         // - Settings properties for SteamCMD installer
-        public override bool loginAnonymous => false;
+        public override bool loginAnonymous => true;
         public override string AppId => "4129620"; /* taken via https://steamdb.info/app/4129620/info/ */
 
         // - Game server Fixed variables
@@ -58,7 +58,7 @@ namespace WindowsGSM.Plugins
 
         }
 
-        // - Start server function, return its Process to WindowsGSM
+        // -                            Start server function, return its Process to WindowsGSM
         public async Task<Process> Start()
         {
             string shipExePath = Functions.ServerPath.GetServersServerFiles(_serverData.ServerID, StartPath);
