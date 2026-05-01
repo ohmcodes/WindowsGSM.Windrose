@@ -59,60 +59,53 @@ namespace WindowsGSM.Plugins
         }
 
         // -                            Start server function, return its Process to WindowsGSM
-        public async Task<Process> Start()
+       public Task<Process> Start()
         {
-            string shipExePath = Functions.ServerPath.GetServersServerFiles(_serverData.ServerID, StartPath);
-            if (!File.Exists(shipExePath))
+            string exePath = Functions.ServerPath.GetServersServerFiles(_serverData.ServerID, StartPath);
+
+            if (!File.Exists(exePath))
             {
-                Error = $"{Path.GetFileName(shipExePath)} not found ({shipExePath})";
-                return null;
+                Error = $"{Path.GetFileName(exePath)} not found ({exePath})";
+                return Task.FromResult<Process>(null);
             }
 
-            string param = string.Empty;
+            ServerName = GetConfigString("ServerName", ServerName);
+            Maxplayers = GetConfigString("MaxPlayerCount", Maxplayers);
 
-            // Prepare Process
+            string param = BuildLaunchArguments();
+
             var p = new Process
             {
                 StartInfo =
                 {
-                    WorkingDirectory = ServerPath.GetServersServerFiles(_serverData.ServerID),
-                    FileName = shipExePath,
-                    Arguments = param.ToString(),
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                    UseShellExecute = false
-
+                    FileName = exePath,
+                    Arguments = param,
+                    WorkingDirectory = Functions.ServerPath.GetServersServerFiles(_serverData.ServerID),
+                    UseShellExecute = false,
+                    CreateNoWindow = false,
+                    WindowStyle = ProcessWindowStyle.Normal
                 },
                 EnableRaisingEvents = true
             };
 
-            // Set up Redirect Input and Output to WindowsGSM Console if EmbedConsole is on
-            if (AllowsEmbedConsole)
-            {
-                p.StartInfo.CreateNoWindow = true;
-                p.StartInfo.RedirectStandardInput = true;
-                p.StartInfo.RedirectStandardOutput = true;
-                p.StartInfo.RedirectStandardError = true;
-                var serverConsole = new ServerConsole(_serverData.ServerID);
-                p.OutputDataReceived += serverConsole.AddOutput;
-                p.ErrorDataReceived += serverConsole.AddOutput;
-            }
-
-            // Start Process
             try
             {
                 p.Start();
-                if (AllowsEmbedConsole)
+
+                try
                 {
-                    p.BeginOutputReadLine();
-                    p.BeginErrorReadLine();
+                    p.PriorityClass = ProcessPriorityClass.AboveNormal;
+                }
+                catch
+                {
                 }
 
-                return p;
+                return Task.FromResult(p);
             }
             catch (Exception e)
             {
-                Error = e.Message;
-                return null; // return null if fail to start
+                Error = e.ToString();
+                return Task.FromResult<Process>(null);
             }
         }
 
@@ -158,6 +151,97 @@ namespace WindowsGSM.Plugins
         {
             var steamCMD = new Installer.SteamCMD();
             return await steamCMD.GetRemoteBuild(AppId);
+        }
+
+        private string BuildLaunchArguments()
+        {
+            string args = "-log";
+
+            if (!string.IsNullOrWhiteSpace(Port))
+                args += $" -PORT={Port}";
+
+            if (!string.IsNullOrWhiteSpace(QueryPort))
+                args += $" -QUERYPORT={QueryPort}";
+
+            if (!string.IsNullOrWhiteSpace(Additional))
+            {
+                string extra = Additional.Trim();
+
+                if (extra.IndexOf("-log", StringComparison.OrdinalIgnoreCase) < 0)
+                    args += $" {extra}";
+            }
+
+            return args.Trim();
+        }
+
+        private string GetConfigString(string key, string fallback)
+        {
+            try
+            {
+                string root = Functions.ServerPath.GetServersServerFiles(_serverData.ServerID);
+
+                string[] possiblePaths =
+                {
+                    Path.Combine(root, "ServerDescription.json"),
+                    Path.Combine(root, "R5", "ServerDescription.json"),
+                    Path.Combine(root, "R5", "Saved", "SaveProfiles", "Default", "ServerDescription.json")
+                };
+
+                foreach (string path in possiblePaths)
+                {
+                    if (!File.Exists(path))
+                        continue;
+
+                    string json = File.ReadAllText(path);
+
+                    var stringMatch = Regex.Match(
+                        json,
+                        $"\"{Regex.Escape(key)}\"\\s*:\\s*\"([^\"]*)\"",
+                        RegexOptions.IgnoreCase
+                    );
+
+                    if (stringMatch.Success)
+                        return stringMatch.Groups[1].Value;
+
+                    var numberMatch = Regex.Match(
+                        json,
+                        $"\"{Regex.Escape(key)}\"\\s*:\\s*(\\d+)",
+                        RegexOptions.IgnoreCase
+                    );
+
+                    if (numberMatch.Success)
+                        return numberMatch.Groups[1].Value;
+
+                    var boolMatch = Regex.Match(
+                        json,
+                        $"\"{Regex.Escape(key)}\"\\s*:\\s*(true|false)",
+                        RegexOptions.IgnoreCase
+                    );
+
+                    if (boolMatch.Success)
+                        return boolMatch.Groups[1].Value;
+                }
+            }
+            catch
+            {
+            }
+
+            return fallback;
+        }
+
+        public bool IsPasswordProtected()
+        {
+            return GetConfigString("IsPasswordProtected", "false").Equals("true", StringComparison.OrdinalIgnoreCase);
+        }
+
+        public string GetPassword()
+        {
+            return GetConfigString("Password", "");
+        }
+
+        public string GetInviteCode()
+        {
+            return GetConfigString("InviteCode", "");
         }
     }
 }
