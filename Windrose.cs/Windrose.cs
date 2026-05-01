@@ -34,7 +34,7 @@ namespace WindowsGSM.Plugins
         public override string AppId => "4129620"; /* taken via https://steamdb.info/app/4129620/info/ */
 
         // - Game server Fixed variables
-        public override string StartPath => "WindroseServer.exe"; // Game server start path
+        public override string StartPath => "R5\Binaries\Win64\WindroseServer-Win64-Shipping.exe"; // Game server start path
         public string FullName = "Windose Dedicated Server"; // Game server FullName
         public bool AllowsEmbedConsole = true;  // Does this server support output redirect?
         public int PortIncrements = 0; // This tells WindowsGSM how many ports should skip after installation
