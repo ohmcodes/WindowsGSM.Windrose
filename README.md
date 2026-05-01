@@ -10,6 +10,7 @@
 
 # Plugin Installation:
 1. Download [latest](https://github.com/ohmcodes/WindowsGSM.Windrose/releases/latest) release
+1.1 If no release click <img width="116" height="42" alt="image" src="https://github.com/user-attachments/assets/c650300f-aaa9-450d-a92f-225b7397db12" /> button then `Download Zip`
 2. Extract then Move **Windrose.cs** folder to **plugins** folder
 3. OR Press on the Puzzle Icon in the left bottom side and install this plugin by navigating to it and select the Zip File.
 4. Click **[RELOAD PLUGINS]** button or restart WindowsGSM
